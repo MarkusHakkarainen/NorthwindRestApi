@@ -79,9 +79,9 @@ public partial class NorthwindOriginalContext : DbContext
 
     public virtual DbSet<Territory> Territories { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=TYÖKONE;Database=NorthwindOriginal;User ID=sa;Password=Student87;Trusted_Connection=False;TrustServerCertificate=True;");
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+    //    => optionsBuilder.UseSqlServer("Server=TYÖKONE;Database=NorthwindOriginal;User ID=sa;Password=Student87;Trusted_Connection=False;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

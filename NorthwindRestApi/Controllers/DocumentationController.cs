@@ -8,15 +8,22 @@ namespace NorthwindRestApi.Controllers
     [ApiController]
     public class DocumentationController : ControllerBase
     {
-        NorthwindOriginalContext db = new NorthwindOriginalContext();
-        private const string ValidKeyCode = "12345"; // Kovakoodattu avainkoodi
+        //NorthwindOriginalContext db = new NorthwindOriginalContext();
+
+        private NorthwindOriginalContext db;
+
+        public DocumentationController(NorthwindOriginalContext dbparametri)
+        {
+            db = dbparametri;
+        }
+
+        private const string ValidKeyCode = "12345";
 
         [HttpGet("{keycode}")]
         public ActionResult GetDocumentation(string keycode)
         {
             try
             {
-                // Tarkistetaan avainkoodi
                 if (keycode != ValidKeyCode)
                 {
                     return BadRequest(new
@@ -26,7 +33,6 @@ namespace NorthwindRestApi.Controllers
                     });
                 }
 
-                // Haetaan dokumentaatio tietokannasta
                 var documentation = db.Documentations.ToList();
 
                 if (documentation == null || !documentation.Any())
