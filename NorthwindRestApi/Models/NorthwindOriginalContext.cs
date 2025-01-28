@@ -29,6 +29,8 @@ public partial class NorthwindOriginalContext : DbContext
 
     public virtual DbSet<CustomerDemographic> CustomerDemographics { get; set; }
 
+    public virtual DbSet<Documentation> Documentations { get; set; }
+
     public virtual DbSet<Employee> Employees { get; set; }
 
     public virtual DbSet<Invoice> Invoices { get; set; }
@@ -79,7 +81,7 @@ public partial class NorthwindOriginalContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=TYÖKONE; Database=NorthwindOriginal;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+        => optionsBuilder.UseSqlServer("Server=TYÖKONE;Database=NorthwindOriginal;User ID=sa;Password=Student87;Trusted_Connection=False;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -206,6 +208,18 @@ public partial class NorthwindOriginalContext : DbContext
                 .IsFixedLength()
                 .HasColumnName("CustomerTypeID");
             entity.Property(e => e.CustomerDesc).HasColumnType("ntext");
+        });
+
+        modelBuilder.Entity<Documentation>(entity =>
+        {
+            entity.HasKey(e => e.DocumentationId).HasName("PK__Document__6A001A8D018856C9");
+
+            entity.ToTable("Documentation");
+
+            entity.Property(e => e.DocumentationId).HasColumnName("DocumentationID");
+            entity.Property(e => e.AvailableRoute).HasMaxLength(200);
+            entity.Property(e => e.Description).HasMaxLength(2000);
+            entity.Property(e => e.Method).HasMaxLength(20);
         });
 
         modelBuilder.Entity<Employee>(entity =>
