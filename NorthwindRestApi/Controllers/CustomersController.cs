@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NorthwindRestApi.Models;
-using System.Linq.Expressions;
+using Microsoft.AspNetCore.Http;
 
 namespace NorthwindRestApi.Controllers
 {
+    [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class CustomersController : ControllerBase
@@ -52,14 +54,12 @@ namespace NorthwindRestApi.Controllers
             }
         }
 
-        [HttpGet("companyname{cname}")]
-        public ActionResult GetByName(String cname)
+        [HttpGet("companyname/{cname}")]
+        public ActionResult GetByName(string cname)
         {
             try
             {
                 var cust = db.Customers.Where(c => c.CompanyName.Contains(cname));
-
-
                 return Ok(cust);
             }
             catch (Exception ex)
@@ -67,6 +67,7 @@ namespace NorthwindRestApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
 
         [HttpPost]
         public ActionResult AddNew([FromBody] Customer cust)
@@ -106,10 +107,11 @@ namespace NorthwindRestApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult EditCustomer(string id,[FromBody] Customer customer)
+        public ActionResult EditCustomer(string id, [FromBody] Customer customer)
         {
             var asiakas = db.Customers.Find(id);
-            if (asiakas != null){
+            if (asiakas != null)
+            {
                 asiakas.CompanyName = customer.CompanyName;
                 asiakas.ContactName = customer.ContactName;
                 asiakas.Address = customer.Address;
@@ -125,9 +127,7 @@ namespace NorthwindRestApi.Controllers
             }
 
             return NotFound("Asiakasta ei löytynyt id:llä" + id);
-             
         }
 
-
+        }
     }
-}

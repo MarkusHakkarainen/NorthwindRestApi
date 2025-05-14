@@ -79,10 +79,16 @@ public partial class NorthwindOriginalContext : DbContext
 
     public virtual DbSet<Territory> Territories { get; set; }
 
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public virtual DbSet<User> Users { get; set; }
 
-    //    => optionsBuilder.UseSqlServer("Server=TYÖKONE;Database=NorthwindOriginal;User ID=sa;Password=Student87;Trusted_Connection=False;TrustServerCertificate=True;");
-
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    { 
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer("Server=secret;");
+        }
+        //=> optionsBuilder.UseSqlServer("Data Source=TYÖKONE;Database=NorthwindOriginal;User ID=SA;Password=Student87;Encrypt=True;TrustServerCertificate=True");
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AS");
@@ -673,6 +679,15 @@ public partial class NorthwindOriginalContext : DbContext
                 .HasForeignKey(d => d.RegionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Territories_Region");
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.Property(e => e.Email).HasMaxLength(30);
+            entity.Property(e => e.Firstname).HasMaxLength(30);
+            entity.Property(e => e.Lastname).HasMaxLength(30);
+            entity.Property(e => e.Password).HasMaxLength(200);
+            entity.Property(e => e.Username).HasMaxLength(10);
         });
 
         OnModelCreatingPartial(modelBuilder);
